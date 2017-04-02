@@ -1,8 +1,6 @@
 <?php
 
-namespace Dau;
-
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
+namespace Dau\Annotations;
 
 /**
  * Takes an object and wraps its methods
@@ -24,15 +22,15 @@ use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
  * Then @Anno2
  * And Finally MyMethod
  */
-class AnnotationsDecorator
+class DecoratorEnabler
 {
 
     private $target;
     private $methods = [];
 
-    function __construct($target)
+    function __construct($target, $readerType='Phalcon\Annotations\Adapter\Memory')
     {
-        $reader = new MemoryAdapter();
+        $reader = new $readerType();
         $reflector = $reader->get($target);
         $methods = $reflector->getMethodsAnnotations();
 
@@ -40,17 +38,21 @@ class AnnotationsDecorator
             $lastDecorator = null;
             $revesedAnnotations = array_reverse($methodAnnotations->getAnnotations());
             foreach ($revesedAnnotations as $annotation) {
-                $name = '\\' . $annotation->getName();
-                if (! class_exists($name)) {
+                if( $annotation->getName() !== 'decorate' ) {
+                    continue;
+                }
+
+                $className = $annotation->getArgument(0);
+                if (! class_exists($className)) {
                     continue;
                 }
 
                 if (! $lastDecorator) {
-                    $lastDecorator = new $name($target, $methodName);
+                    $lastDecorator = new $className($target, $methodName);
                     continue;
                 }
 
-                $lastDecorator = new $name($lastDecorator);
+                $lastDecorator = new $className($lastDecorator);
             }
             $this->methods[$methodName] = $lastDecorator;
         }

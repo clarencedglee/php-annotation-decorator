@@ -2,13 +2,14 @@
 
 namespace Test;
 
-use \Dau\AnnotationsDecorator;
+use \Dau\Annotations\DecoratorEnabler;
+use \Dau\Annotations\Decorator;
 
 class UnitTest extends \UnitTestCase
 {
     public function testSubjectMethodAreExposed()
     {
-        $subject = new AnnotationsDecorator(new Subject);
+        $subject = new DecoratorEnabler(new Subject);
         $this->assertEquals(
             [3, 5, 8],
             $subject->unannotated(3, 5, 8)
@@ -17,7 +18,7 @@ class UnitTest extends \UnitTestCase
 
     public function testOneAnnotationApplied()
     {
-        $subject = new AnnotationsDecorator(new SubjectWithMakeFirstParamZero);
+        $subject = new DecoratorEnabler(new SubjectWithMakeFirstParamZero);
         $this->assertEquals(
             [0, 13, 17],
             $subject->zero(11, 13, 17)
@@ -26,7 +27,7 @@ class UnitTest extends \UnitTestCase
     
     public function testManyAnnotationsAppliedInOrder()
     {
-        $subject = new AnnotationsDecorator(new SubjectWithMakeFirstParamZero);
+        $subject = new DecoratorEnabler(new SubjectWithMakeFirstParamZero);
         $this->assertEquals(
             [9, 13, 17],
             $subject->zeroNine(11, 13, 17)
@@ -49,7 +50,7 @@ class Subject
      * even though there is no class
      * Test\NonExistentAnnotation
      *
-     * @Test\NonExistentAnnotation
+     * @decorate(\Test\NonExistentAnnotation)
      */
     function missing()
     {
@@ -60,7 +61,7 @@ class SubjectWithMakeFirstParamZero
 {
 
     /**
-     * @Test\MakeFirstArgZero
+     * @decorate(\Test\MakeFirstArgZero)
      */
     function zero($a, $b, $c)
     {
@@ -68,8 +69,8 @@ class SubjectWithMakeFirstParamZero
     }
 
     /**
-     * @Test\MakeFirstArgZero
-     * @Test\MakeZerosNines
+     * @decorate(\Test\MakeFirstArgZero)
+     * @decorate(\Test\MakeZerosNines)
      */
     function zeroNine($a, $b, $c)
     {
@@ -77,18 +78,18 @@ class SubjectWithMakeFirstParamZero
     }
 }
 
-class makeFirstArgZero extends \Dau\Annotation
+class makeFirstArgZero extends Decorator
 {
-    function onInvoke($args)
+    function onInvoke(array $args): array
     {
         $args[0] = 0;
         return $args;
     }
 }
 
-class makeZerosNines extends \Dau\Annotation
+class makeZerosNines extends Decorator
 {
-    function onInvoke($args)
+    function onInvoke(array $args): array
     {
         $out = [];
         foreach( $args as $key => $arg ) {
