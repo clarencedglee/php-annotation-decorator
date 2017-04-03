@@ -2,10 +2,10 @@
 
 namespace Test;
 
-use \Dau\Annotations\DecoratorEnabler;
-use \Dau\Annotations\Decorator;
+use \Dau\Annotations\Decorators\DecoratorEnabler;
+use \Dau\Annotations\Decorators\Decorator;
 
-class UnitTest extends \UnitTestCase
+class DecoratorEnablerTest extends \UnitTestCase
 {
     public function testSubjectMethodAreExposed()
     {

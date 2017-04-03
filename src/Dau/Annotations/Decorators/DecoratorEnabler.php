@@ -1,6 +1,6 @@
 <?php
 
-namespace Dau\Annotations;
+namespace Dau\Annotations\Decorators;
 
 /**
  * Takes an object and wraps its methods
