@@ -33,6 +33,21 @@ class DecoratorEnablerTest extends \UnitTestCase
             $subject->zeroNine(11, 13, 17)
         );
     }
+
+    public function testAnnotationGetsArguments()
+    {
+        $subject = new DecoratorEnabler(new Subject);
+        $this->assertEquals(
+           ['arg1', 'arg2'],
+           $subject->withArgs()
+        );
+
+        $subject = new DecoratorEnabler(new Subject);
+        $this->assertEquals(
+           ['required' => 'false', 'firstParam' => '1'],
+           $subject->withNamedArgs()[0]
+        );
+    }
 }
 
 /**
@@ -54,6 +69,24 @@ class Subject
      */
     function missing()
     {
+    }
+
+    /**
+     *
+     * @decorate(\Test\WithArgs, arg1, arg2)
+     */
+    function withArgs()
+    {
+        return func_get_args();
+    }
+
+    /**
+     *
+     * @decorate(\Test\WithNamedArgs, firstParam=1, required="false")
+     */
+    function withNamedArgs()
+    {
+        return func_get_args();
     }
 }
 
@@ -100,5 +133,21 @@ class makeZerosNines extends AbstractDecorator
             }
         }
         return $out;
+    }
+}
+
+class WithArgs extends AbstractDecorator
+{
+    function onInvoke(array $args): array
+    {
+        return $this->getAnnotationArgs();
+    }
+}
+
+class WithNamedArgs extends AbstractDecorator
+{
+    function onInvoke(array $args): array
+    {
+        return [$this->getAnnotationArgs()];
     }
 }

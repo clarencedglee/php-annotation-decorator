@@ -49,10 +49,13 @@ class DecoratorEnabler
 
                 if (! $lastDecorator) {
                     $lastDecorator = new $className($target, $methodName);
-                    continue;
+                } else {
+                    $lastDecorator = new $className($lastDecorator);
                 }
 
-                $lastDecorator = new $className($lastDecorator);
+                $args = $annotation->getArguments();
+                array_shift($args);
+                $lastDecorator->setAnnotationArgs($args);
             }
             $this->methods[$methodName] = $lastDecorator;
         }

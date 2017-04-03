@@ -55,4 +55,23 @@ abstract class AbstractDecorator
         }
         return new \ReflectionMethod( $this->target, $this->methodName );
     }
+
+    /**
+     * Receive the arguments from the annotation
+     */
+    final public function setAnnotationArgs(array $args)
+    {
+        $this->annotationArgs = $args;
+    } 
+
+    /**
+     * Get the arguments from the annotation
+     */
+    final public function getAnnotationArgs(): array
+    {
+        if ($this->target instanceof AbstractDecorator) {
+            return $this->target->getAnnotationArgs();
+        }
+        return $this->annotationArgs;
+    } 
 }
