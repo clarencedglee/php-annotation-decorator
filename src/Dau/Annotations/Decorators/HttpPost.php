@@ -4,10 +4,10 @@ namespace Dau\Annotations\Decorators;
 
 use Dau\Annotations\Decorator;
 
-class HttpPost extends Decorator
+class HttpPost extends AbstractAssocArrayArguments
 {
-    public function onInvoke(array $args): array
+    public function getArguments(): array
     {
-        return $args;
+        return $_POST;
     }
 }
