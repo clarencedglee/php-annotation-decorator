@@ -3,7 +3,7 @@
 namespace Test;
 
 use \Dau\Annotations\Decorators\DecoratorEnabler;
-use \Dau\Annotations\Decorators\Decorator;
+use \Dau\Annotations\Decorators\AbstractDecorator;
 
 class DecoratorEnablerTest extends \UnitTestCase
 {
@@ -78,7 +78,7 @@ class SubjectWithMakeFirstParamZero
     }
 }
 
-class makeFirstArgZero extends Decorator
+class makeFirstArgZero extends AbstractDecorator
 {
     function onInvoke(array $args): array
     {
@@ -87,7 +87,7 @@ class makeFirstArgZero extends Decorator
     }
 }
 
-class makeZerosNines extends Decorator
+class makeZerosNines extends AbstractDecorator
 {
     function onInvoke(array $args): array
     {

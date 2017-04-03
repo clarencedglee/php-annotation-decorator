@@ -4,7 +4,7 @@ namespace Dau\Annotations\Decorators;
 
 use Dau\Annotations\Decorators\AbstractDecorator;
 
-abstract class AssocArrayArguments extends AbstractDecorator
+abstract class AbstractAssocArrayArguments extends AbstractDecorator
 {
     abstract public function getArguments(): array;
     

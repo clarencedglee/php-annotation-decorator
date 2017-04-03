@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Test\Dau\Annotations\Decorators\ArrayArguments;
 
 use \Dau\Annotations\Decorators\ArrayArguments;
 
@@ -8,8 +8,8 @@ class ArrayArgumentsTest extends \UnitTestCase
 {
     public function test()
     {
-        $hp = $this->getMockBuilder('\Dau\Annotations\Decorators\AssocArrayArguments')
-                   ->setConstructorArgs([new ArrayArgumentsTestObjectMock(), 'testMethod'])
+        $hp = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractAssocArrayArguments')
+                   ->setConstructorArgs([new Mock(), 'testMethod'])
                    ->getMock();
 
         $hp->method('getArguments')
@@ -19,7 +19,7 @@ class ArrayArgumentsTest extends \UnitTestCase
     }
 }
 
-class ArrayArgumentsTestObjectMock {
+class Mock {
     public function testMethod(string $param1str, int $param2int){
         return [$param1str, $param2int];
     }

@@ -8,7 +8,7 @@ class DecoratorTest extends \UnitTestCase
     {
         $original = $this->getMockBuilder('\Test\Dau\Annotations\Decorators\Mock')->getMock();
 
-        $hp = $this->getMockBuilder('\Dau\Annotations\Decorators\Decorator')
+        $hp = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractDecorator')
                    ->setConstructorArgs([$original, 'testMethod'])
                    ->getMock();
 
@@ -30,17 +30,17 @@ class DecoratorTest extends \UnitTestCase
         $original = $this->getMockBuilder('\Test\Dau\Annotations\Decorators\Mock')->getMock();
 
         // decorate
-        $hp1 = $this->getMockBuilder('\Dau\Annotations\Decorators\Decorator')
+        $hp1 = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractDecorator')
                    ->setConstructorArgs([$original, 'testMethod'])
                    ->getMock();
 
         // decorate again
-        $hp2 = $this->getMockBuilder('\Dau\Annotations\Decorators\Decorator')
+        $hp2 = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractDecorator')
                    ->setConstructorArgs([$hp1])
                    ->getMock();
 
         // decorate it like a pass-the-parcel
-        $hp3 = $this->getMockBuilder('\Dau\Annotations\Decorators\Decorator')
+        $hp3 = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractDecorator')
                    ->setConstructorArgs([$hp2])
                    ->getMock();
 
