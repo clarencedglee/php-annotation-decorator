@@ -16,6 +16,11 @@ abstract class AbstractDecorator
     private $methodname;
 
     /**
+     * Arguments specified in the annotation
+     */
+    private $annotationArgs;
+
+    /**
      * Calls the decorated method after processing arguments
      * with $this->onInvoke()
      */
@@ -40,9 +45,14 @@ abstract class AbstractDecorator
      */
     final public function invokeArgs()
     {
-        $decoratedArgs = $this->onInvoke(func_get_args());
         $func = [$this->target, $this->methodName];
-        return call_user_func_array($func, $decoratedArgs);
+        $args = func_get_args();
+        try{
+            $args = $this->onInvoke($args);
+        }catch(SkipException $e){
+            // carry on
+        }
+        return call_user_func_array($func, $args);
     }
 
     /**
@@ -69,9 +79,6 @@ abstract class AbstractDecorator
      */
     final public function getAnnotationArgs(): array
     {
-        if ($this->target instanceof AbstractDecorator) {
-            return $this->target->getAnnotationArgs();
-        }
-        return $this->annotationArgs;
+        return $this->annotationArgs ?? [];
     } 
 }

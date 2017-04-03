@@ -50,7 +50,6 @@ class ArrayArgumentsTest extends \UnitTestCase
         $a->invokeArgs();
     }
 
-
     public function testOptionalParamsOk()
     {
         $a = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractAssocArrayArguments')
@@ -63,6 +62,28 @@ class ArrayArgumentsTest extends \UnitTestCase
         
         $a->invokeArgs();
     }
+
+    /**
+     * @expectedException TypeError
+     */
+    public function testObservesAnnotationArgumentRequired()
+    {
+        $a = $this->getMockBuilder('\Dau\Annotations\Decorators\AbstractAssocArrayArguments')
+                   ->setConstructorArgs([new Mock(), 'testMethod'])
+                   ->getMock();
+
+        // expects 2 params, but we give it none
+        $a->method('getArguments')
+           ->willReturn([]);
+
+        // no errors because this annotation is given required=false
+        $a->setAnnotationArgs(['required' => false]);
+
+        // this should not throw a \Dau\Annotations\Decorators\SkippedException
+        // but it should throw a type error because we've passed it no params
+        $a->invokeArgs();
+    }
+    
 }
 
 class Mock {

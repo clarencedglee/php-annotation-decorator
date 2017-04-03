@@ -11,6 +11,13 @@ abstract class AbstractAssocArrayArguments extends AbstractDecorator
     protected function onInvoke(array $args): array
     {
         $incomingArgs = $this->getArguments();
+        $annotationArgs = $this->getAnnotationArgs();
+        if (empty($incomingArgs)
+            && isset($annotationArgs['required'])
+            && $annotationArgs['required'] === false
+        ) {
+            throw new SkipException;
+        }
         $params   = $this->getOriginalMethod()->getParameters();
         $processArgs = [];
         foreach ($params as $param) {
