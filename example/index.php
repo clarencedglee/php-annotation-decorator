@@ -12,6 +12,13 @@ class Service {
     public function add(int $id, string $name, array $data) {
         return '$id = '.$id.', $name = ' . $name . ', $data = '.implode(',', $data);
     }
+
+   /**
+     * @decorate(\Dau\Annotations\Decorators\HttpGet, required=false)
+     */
+    public function remove(int $id, string $name, array $data) {
+        return '$id = '.$id.', $name = ' . $name . ', $data = '.implode(',', $data);
+    }
 }
 
 $decorated = new \Dau\Annotations\Decorators\DecoratorEnabler(new Service);
@@ -34,3 +41,10 @@ try {
 } catch( \Dau\Annotations\Decorators\MissingArgumentsException $e ){
     var_dump('Problems');
 }
+
+// While we have $_GET, the params are overridden
+var_dump($decorated->remove(1, 'param', []));
+
+// Without $_GET, the params we pass remain intact
+$_GET = [];
+var_dump($decorated->remove(1, 'param', []));
