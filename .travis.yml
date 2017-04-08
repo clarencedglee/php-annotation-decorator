@@ -14,7 +14,7 @@ before_install:
   - vendor/bin/install-phalcon.sh 3.0.x
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit tests/
 
 notifications:
   email: false
