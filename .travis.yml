@@ -1,4 +1,20 @@
 language: php
+
 php:
 - 7.0
-script: phpunit tests/
+
+cache:
+  directories:
+    - vendor
+    - ~/.composer/cache
+    - ~/cphalcon
+
+before_install:
+  - composer install --prefer-source --no-interaction
+  - vendor/bin/install-phalcon.sh 3.0.x
+
+script:
+  - vendor/bin/phpunit
+
+notifications:
+  email: false
