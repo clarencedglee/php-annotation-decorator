@@ -10,7 +10,7 @@ cache:
     - ~/cphalcon
 
 before_install:
-  - composer install --prefer-source --no-interaction --ignore-platform-req
+  - composer install --prefer-source --no-interaction --ignore-platform-reqs
   - vendor/bin/install-phalcon.sh 3.0.x
 
 script:
